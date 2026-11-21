@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#F5F1E8">
+<meta name="description" content="A quiet, beautiful space for your thoughts, reflections and words.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="My Diary">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>My Diary</title>
+<style>
+
+:root{--bg:#F6F2E9;--surface:#FFFCF6;--card:#EAE4D9;--green:#244A3B;--green2:#315C49;--gold:#B99A65;--ink:#343A35;--muted:#77796F;--line:#DED8CC;--danger:#A34D42;--shadow:0 8px 26px rgba(49,57,46,.07)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}body{padding-bottom:calc(84px + env(safe-area-inset-bottom));transition:background .2s,color .2s}body.dark{--bg:#171E1A;--surface:#202923;--card:#2A352D;--green:#9BBBA6;--green2:#B5CDBB;--gold:#C6A875;--ink:#EAEDE7;--muted:#A6B0A7;--line:#39453D;--danger:#E49A8F;--shadow:0 8px 26px rgba(0,0,0,.18)}
+button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,[contenteditable=true]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.app{max-width:760px;margin:0 auto;padding:0 18px}.topbar{height:66px;display:flex;align-items:center;justify-content:space-between}.brand{font-family:Georgia,serif;font-size:25px;color:var(--green);letter-spacing:-.5px}.top-actions{display:flex;gap:8px}.icon-btn{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--ink);display:grid;place-items:center;font-size:17px}
+.page{display:none;padding:8px 0 28px}.page.active{display:block}.eyebrow{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700}.greeting{font:32px/1.15 Georgia,serif;margin:8px 0 5px;color:var(--ink)}.subtle{color:var(--muted);font-size:13px}.goal-card{background:var(--green);color:#F8F5ED;border-radius:22px;padding:19px;margin:22px 0;box-shadow:var(--shadow)}.goal-top{display:flex;justify-content:space-between;align-items:center}.goal-title{font:20px Georgia,serif}.goal-count{font-size:13px;opacity:.9}.progress{height:7px;background:rgba(255,255,255,.2);border-radius:20px;margin:15px 0 8px;overflow:hidden}.progress>span{display:block;height:100%;width:0;background:var(--gold);border-radius:20px;transition:width .25s}.goal-foot{font-size:11px;opacity:.8}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:24px 0 12px}.section-head h2{font:22px Georgia,serif;margin:0}.text-btn{border:0;background:none;color:var(--green);font-weight:700;font-size:12px;padding:8px}
+.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.quick{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:15px;text-align:left;color:var(--ink);min-height:100px}.quick .emoji{font-size:22px;display:block;margin-bottom:12px}.quick strong{font-size:13px;display:block}.quick small{font-size:11px;color:var(--muted)}
+.collection-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.collection-card{background:var(--card);border:0;border-radius:15px;padding:14px;text-align:left;color:var(--ink)}.collection-card .dot{width:8px;height:8px;background:var(--gold);display:inline-block;border-radius:50%;margin-right:7px}.collection-card strong{font:16px Georgia,serif}.collection-card small{display:block;color:var(--muted);margin:7px 0 0 15px}
+.empty{border:1px dashed var(--line);border-radius:16px;padding:25px 16px;text-align:center;color:var(--muted);font-size:13px}.empty .big{font-size:27px;margin-bottom:8px}
+.entry-list{display:grid;gap:9px}.entry-card{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:14px;display:flex;gap:12px;align-items:flex-start}.entry-main{min-width:0;flex:1}.entry-title{font:18px Georgia,serif;margin:0 0 5px;overflow-wrap:anywhere}.entry-preview{font-size:12px;color:var(--muted);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.entry-meta{font-size:10px;color:var(--muted);margin-top:9px}.entry-open{border:0;background:none;color:var(--green);font-size:12px;font-weight:700;padding:5px}
+.bottom-nav{position:fixed;z-index:10;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--line);padding:9px 10px calc(9px + env(safe-area-inset-bottom));display:flex;justify-content:space-around;max-width:760px;margin:auto}.nav-item{border:0;background:none;color:var(--muted);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:58px}.nav-item .nav-icon{font-size:19px}.nav-item.active{color:var(--green);font-weight:800}
+.fab{position:fixed;z-index:11;bottom:calc(76px + env(safe-area-inset-bottom));right:max(20px,calc((100vw - 720px)/2));width:56px;height:56px;border:0;border-radius:50%;background:var(--green);color:#fff;font-size:29px;box-shadow:0 8px 22px rgba(36,74,59,.28)}
+.page-title{font:30px Georgia,serif;margin:12px 0 5px}.toolbar-row{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}.pill{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:30px;padding:8px 12px;font-size:12px}.pill.active{background:var(--green);border-color:var(--green);color:#fff}
+.searchbox{width:100%;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;padding:14px 15px;margin:15px 0}
+.calendar{background:var(--surface);border:1px solid var(--line);border-radius:17px;padding:13px}.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.cal-head button{border:0;background:none;color:var(--green);font-size:18px}.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}.cal-grid span{font-size:11px;color:var(--muted);padding:7px 0}.cal-day{border:0;background:none;color:var(--ink);border-radius:9px;padding:9px 0;font-size:12px;position:relative}.cal-day.today{background:var(--green);color:white}.cal-day.has-entry:after{content:"";position:absolute;width:4px;height:4px;border-radius:50%;background:var(--gold);bottom:3px;left:calc(50% - 2px)}
+.settings-list{display:grid;gap:9px;margin-top:18px}.setting{display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:15px}.setting strong{font-size:13px}.setting small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.setting input{width:76px;background:var(--bg);border:1px solid var(--line);border-radius:9px;color:var(--ink);padding:8px}
+.modal-backdrop{position:fixed;z-index:30;inset:0;background:rgba(15,22,17,.48);display:none;align-items:flex-end;justify-content:center}.modal-backdrop.show{display:flex}.sheet{background:var(--bg);width:100%;max-width:760px;max-height:92dvh;overflow:auto;border-radius:24px 24px 0 0;padding:18px 18px calc(22px + env(safe-area-inset-bottom));}.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.sheet-head h2{font:23px Georgia,serif;margin:0}.close{border:0;background:var(--card);color:var(--ink);border-radius:50%;width:35px;height:35px;font-size:18px}
+.form-field{margin:12px 0}.form-field label{display:block;font-size:11px;font-weight:800;color:var(--muted);margin-bottom:6px}.form-field input,.form-field select,.form-field textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--surface);color:var(--ink)}.form-field textarea{min-height:76px;resize:vertical}
+.type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.type-choice{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;padding:15px;text-align:left}.type-choice span{font-size:21px;display:block;margin-bottom:8px}.type-choice strong{font-size:13px}
+.primary{border:0;background:var(--green);color:#fff;border-radius:13px;padding:13px 17px;font-weight:800;width:100%;margin-top:10px}.secondary{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 13px;font-size:12px}.danger{color:var(--danger)}
+.editor-tools{display:flex;gap:5px;flex-wrap:wrap;padding:9px;background:var(--card);border-radius:12px;margin:12px 0}.editor-tools button{border:0;background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 10px;font-weight:700;min-width:34px}.editor-area{min-height:240px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:15px;font:17px/1.65 Georgia,serif;outline:none}.editor-area:empty:before{content:"Start writing…";color:var(--muted)}
+.editor-status{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin:9px 2px}.editor-extra{display:none}.editor-extra.show{display:block}
+.toast{position:fixed;z-index:50;bottom:calc(90px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:30px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}
+@media(min-width:600px){.app{padding:0 26px}.quick-grid{grid-template-columns:repeat(4,1fr)}.collection-row{grid-template-columns:repeat(4,1fr)}.sheet{border-radius:24px;margin:20px;max-height:90dvh}.modal-backdrop{align-items:center}.fab{right:calc((100vw - 700px)/2 + 10px)}}
+
+/* MY DIARY v0.2 — JOURNAL EDITION */
+:root{
+ --bg:#F5F1E8;--surface:#FFFDF8;--card:#EAE5D9;--green:#294B3C;--green2:#3D6650;
+ --gold:#B99A65;--ink:#303A33;--muted:#7D8177;--line:#E3DDD1;
+ --shadow:0 12px 34px rgba(43,61,48,.075)
+}
+body{letter-spacing:.005em}
+.app{max-width:780px;padding-left:20px;padding-right:20px}
+.topbar{height:72px}
+.brand{font-size:27px;letter-spacing:-.8px;font-weight:600}
+.icon-btn{width:42px;height:42px;box-shadow:0 2px 8px rgba(40,55,43,.035)}
+.page{padding-top:10px;padding-bottom:36px}
+.eyebrow{letter-spacing:1.8px;font-size:10px}
+.greeting{font-size:clamp(34px,8vw,43px);letter-spacing:-1.35px;line-height:1.08;margin:11px 0 8px}
+.subtle{font-size:13px;line-height:1.65}
+#homePage>.eyebrow{color:var(--green2)}
+#homePage>.greeting{max-width:520px}
+#homePage>.subtle{max-width:320px}
+.goal-card{position:relative;overflow:hidden;border-radius:24px;padding:21px 20px;margin:24px 0 27px;background:linear-gradient(135deg,#294B3C 0%,#355D49 100%);box-shadow:0 14px 28px rgba(41,75,60,.16)}
+.goal-card:after{content:"";position:absolute;width:150px;height:150px;border:1px solid rgba(255,255,255,.10);border-radius:50%;right:-45px;top:-75px;box-shadow:0 0 0 18px rgba(255,255,255,.035),0 0 0 38px rgba(255,255,255,.025);pointer-events:none}
+.goal-title{font-size:21px;letter-spacing:-.3px}
+.goal-count{font-variant-numeric:tabular-nums;font-size:12px}
+.progress{height:6px;margin:17px 0 10px}
+.progress>span{background:#D5BC8D}
+.goal-foot{font-size:11px;letter-spacing:.02em}
+.section-head{margin:29px 0 14px}
+.section-head h2{font-size:23px;letter-spacing:-.45px}
+.text-btn{letter-spacing:.7px;font-size:10px}
+.quick-grid{gap:11px}
+.quick{position:relative;min-height:116px;padding:16px;border-radius:19px;background:var(--surface);border-color:var(--line);box-shadow:0 3px 12px rgba(45,55,45,.025);transition:transform .18s,border-color .18s,box-shadow .18s}
+.quick:active{transform:scale(.985)}
+.quick .emoji{width:35px;height:35px;display:grid;place-items:center;margin-bottom:12px;border-radius:12px;background:var(--card);font-size:19px;color:var(--green)}
+.quick strong{font-size:13px;letter-spacing:-.1px}
+.quick small{display:block;margin-top:4px;line-height:1.45}
+.collection-row{gap:11px}
+.collection-card{border-radius:18px;padding:16px;background:var(--card);transition:transform .18s}
+.collection-card:active{transform:scale(.985)}
+.collection-card strong{font-size:16px;line-height:1.3}
+.collection-card small{font-size:11px;line-height:1.4}
+.entry-list{gap:11px}
+.entry-card{padding:16px;border-radius:18px;background:var(--surface);border-color:rgba(125,129,119,.17);box-shadow:0 4px 14px rgba(45,55,45,.025)}
+.entry-title{font-size:19px;letter-spacing:-.35px;line-height:1.25}
+.entry-preview{font-size:12px;line-height:1.6;margin-top:5px}
+.entry-meta{font-size:10px;letter-spacing:.15px;margin-top:11px}
+.entry-open{padding:8px 9px;border-radius:9px;background:var(--card);letter-spacing:.5px;font-size:10px}
+.bottom-nav{max-width:780px;padding-top:11px;background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top-color:var(--line)}
+.nav-item{gap:5px;font-size:10px;min-width:62px;padding:2px 0}
+.nav-item .nav-icon{font-size:20px}
+.nav-item.active{color:var(--green)}
+.fab{width:58px;height:58px;box-shadow:0 9px 24px rgba(41,75,60,.27);font-size:30px}
+.page-title{font-size:34px;letter-spacing:-.8px}
+.searchbox{border-radius:15px;padding:15px 16px;box-shadow:0 3px 12px rgba(45,55,45,.025)}
+.calendar{border-radius:20px;padding:15px;box-shadow:0 4px 16px rgba(45,55,45,.025)}
+.cal-day{min-height:38px}
+.setting{border-radius:16px;padding:16px}
+.modal-backdrop{backdrop-filter:blur(4px)}
+.sheet{padding:21px 20px calc(24px + env(safe-area-inset-bottom));border-radius:26px 26px 0 0}
+.sheet-head h2{font-size:25px;letter-spacing:-.45px}
+.form-field{margin:15px 0}
+.form-field label{letter-spacing:1px;font-size:10px}
+.form-field input,.form-field select,.form-field textarea{border-radius:13px;padding:13px;font-size:14px}
+.type-choice{border-radius:17px;padding:16px;transition:transform .15s}
+.type-choice:active{transform:scale(.98)}
+.primary{border-radius:14px;padding:14px;font-size:14px;box-shadow:0 5px 14px rgba(41,75,60,.13)}
+.secondary{border-radius:12px}
+.editor-tools{padding:8px;border-radius:14px;gap:6px}
+.editor-tools button{border-radius:9px;min-height:36px}
+.editor-area{min-height:280px;border-radius:16px;padding:18px;font-size:18px;line-height:1.75}
+.empty{border-radius:19px;padding:30px 18px;line-height:1.65;background:color-mix(in srgb,var(--surface) 65%,transparent)}
+body.dark .goal-card{background:linear-gradient(135deg,#263E32 0%,#304B3A 100%)}
+body.dark .quick .emoji{background:#354238;color:#C1D3C4}
+body.dark .bottom-nav{background:color-mix(in srgb,var(--surface) 94%,transparent)}
+@media(min-width:600px){
+ .app{padding-left:28px;padding-right:28px}
+ .quick{min-height:126px;padding:18px}
+ .goal-card{padding:24px}
+ .sheet{border-radius:26px;padding:24px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+
+/* ===================================================================
+   MY DIARY v3 — functional upgrade, Android & offline polish
+   =================================================================== */
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+body{overscroll-behavior-y:none;-webkit-touch-callout:none}
+button,.pill,.nav-item,.quick,.collection-card,.type-choice,.cal-day,.icon-btn{touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.editor-area,.entry-preview,.entry-title,input,textarea,.setting small{-webkit-user-select:text;user-select:text}
+.editor-area,.entry-title,.entry-preview,#entryTitle,.form-field textarea{font-family:Georgia,"Noto Naskh Arabic","Noto Nastaliq Urdu","Segoe UI",serif}
+.sheet{max-height:92vh;max-height:92dvh}
+.hidden{display:none!important}
+.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(min-width:600px){.quick-grid{grid-template-columns:repeat(3,1fr)}}
+.type-choice.wide{grid-column:1/-1;display:flex;align-items:center;gap:12px}.type-choice.wide span{margin:0}
+.cal-day.selected{outline:2px solid var(--gold);outline-offset:-2px}
+.cal-day.today.selected{outline-color:var(--gold)}
+#monthLabel{cursor:pointer;padding:6px 10px;border-radius:10px}
+.cal-head button{min-width:40px;min-height:40px}
+.stat-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.entry-actions{display:flex;flex-direction:column;gap:6px;align-items:stretch}
+.entry-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--green);background:var(--card);border-radius:20px;padding:3px 8px;margin-top:9px;margin-right:6px}
+.entry-meta{display:flex;flex-wrap:wrap;gap:0 4px;align-items:center}
+.entry-meta .entry-badge{margin-top:11px}
+.seg{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.seg .pill{padding:7px 11px}
+.setting.col{flex-direction:column;align-items:stretch;gap:12px}
+.setting.col .seg{justify-content:flex-start}
+.setting .status{font-size:12px;color:var(--green);font-weight:700;text-align:right;max-width:150px}
+.banner{background:var(--danger);color:#fff;border-radius:14px;padding:12px 14px;font-size:12px;line-height:1.5;margin:6px 0 12px}
+.hint{color:var(--muted);font-size:11px;line-height:1.55;margin:7px 2px 0}
+.danger-btn{border:1px solid var(--danger);color:var(--danger);background:transparent;border-radius:13px;padding:13px;font-weight:800;width:100%;margin-top:10px}
+.toast{max-width:min(88vw,420px);text-align:center;line-height:1.4}
+.editor-tools button:active,.pill:active,.icon-btn:active,.entry-open:active,.secondary:active,.primary:active,.nav-item:active,.cal-day:active{transform:scale(.96)}
+.primary,.secondary,.pill,.icon-btn,.nav-item,.entry-open{transition:transform .12s}
+.primary:disabled{opacity:.55}
+
+/* voice notes */
+.voice-box{background:var(--card);border-radius:16px;padding:14px;display:grid;gap:12px}
+.rec-row{display:flex;align-items:center;gap:12px}
+.rec-btn{width:52px;height:52px;border-radius:50%;border:0;background:var(--green);color:#fff;font-size:20px;display:grid;place-items:center;flex:none;box-shadow:0 6px 16px rgba(41,75,60,.22)}
+.rec-btn.recording{background:var(--danger);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(163,77,66,.45)}50%{box-shadow:0 0 0 12px rgba(163,77,66,0)}}
+.rec-info{min-width:0;flex:1}.rec-info strong{display:block;font-size:13px}.rec-info small{color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+.clip-list{display:grid;gap:8px}
+.clip{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px 10px}
+.clip .play{width:38px;height:38px;border-radius:50%;border:0;background:var(--green);color:#fff;font-size:13px;flex:none;display:grid;place-items:center}
+.clip input[type=range]{flex:1;min-width:0;accent-color:var(--green);height:28px;margin:0}
+.clip .time{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
+.clip .rm{border:0;background:none;color:var(--danger);font-size:16px;width:34px;height:34px;flex:none}
+.confirm-text{color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 6px}
+body.modal-open{overflow:hidden}
+
+/* Android edge-to-edge: keep the header clear of the status bar / camera cutout */
+.app{padding-top:env(safe-area-inset-top,0px)}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar"><div class="brand">My Diary.</div><div class="top-actions"><button class="icon-btn" id="themeBtn" aria-label="Toggle theme">☾</button><button class="icon-btn" id="settingsBtn" aria-label="Settings">⚙</button></div></header>
+
+<main>
+<div class="banner hidden" id="storageBanner" role="alert">Local storage could not start on this device, so entries cannot be saved. Please restart the app. Until then, copy anything important somewhere safe.</div>
+
+<section class="page active" id="homePage">
+<div class="eyebrow" id="todayLabel"></div><h1 class="greeting">A little space<br>to be yourself.</h1><div class="subtle">Pause for a moment. Gather your thoughts. Leave a few words for the person you are becoming.</div>
+<div class="goal-card"><div class="goal-top"><div class="goal-title">Your daily writing goal</div><div class="goal-count" id="goalCount">0 / 100 words</div></div><div class="progress"><span id="goalProgress"></span></div><div class="goal-foot" id="goalFoot">Every word is a small step.</div></div>
+<div class="section-head"><h2>Begin with a blank page</h2></div>
+<div class="quick-grid">
+<button class="quick" data-create="Quick Note"><span class="emoji">✎</span><strong>Quick Note</strong><small>Capture a thought</small></button>
+<button class="quick" data-create="Quran Reflection"><span class="emoji">☾</span><strong>Quran Reflection</strong><small>Save a lesson</small></button>
+<button class="quick" data-create="Diary Entry"><span class="emoji">▤</span><strong>Diary Entry</strong><small>Write your day</small></button>
+<button class="quick" data-create="Creative Writing"><span class="emoji">✧</span><strong>Creative Writing</strong><small>Make something</small></button>
+<button class="quick" data-create="Voice Note"><span class="emoji">🎙</span><strong>Voice Note</strong><small>Speak your mind</small></button>
+<button class="quick" id="quickPrompt"><span class="emoji">❝</span><strong>Writing Prompt</strong><small>A little inspiration</small></button>
+</div>
+<div class="section-head"><h2>Your little library</h2><button class="text-btn" data-goto="collectionsPage">VIEW ALL</button></div>
+<div class="collection-row" id="homeCollections"></div>
+<div class="section-head"><h2>Pages from your days</h2><button class="text-btn" data-goto="searchPage">SEE ALL</button></div>
+<div id="recentEntries" class="entry-list"><div class="empty"><div class="big">✧</div>Every meaningful page begins with a first word.</div></div>
+</section>
+
+<section class="page" id="collectionsPage">
+<div class="eyebrow">YOUR LIBRARY</div><h1 class="page-title">Collections</h1><p class="subtle">Keep your thoughts naturally organized.</p>
+<div class="toolbar-row"><button class="pill active" id="allEntriesPill" data-collection-filter="All">All entries</button><button class="pill" id="newCollectionBtn">＋ New collection</button></div>
+<div id="collectionList" class="entry-list"></div>
+<div class="section-head"><h2 id="allEntriesTitle">All entries</h2></div><div id="allEntries" class="entry-list"></div>
+</section>
+
+<section class="page" id="journalPage">
+<div class="eyebrow">YOUR WRITING JOURNEY</div><h1 class="page-title">Journal</h1><p class="subtle">A little progress, day by day.</p>
+<div class="calendar"><div class="cal-head"><button id="prevMonth" aria-label="Previous month">‹</button><strong id="monthLabel" title="Jump to today"></strong><button id="nextMonth" aria-label="Next month">›</button></div><div class="cal-grid" id="calendarGrid"></div></div>
+<div class="section-head"><h2 id="selectedDateTitle">Today's entries</h2></div><div id="dayEntries" class="entry-list"></div>
+<div class="section-head"><h2>Your activity</h2></div>
+<div class="stat-row">
+<div class="collection-card"><strong id="totalWords">0</strong><small>Total words written</small></div>
+<div class="collection-card"><strong id="activeDays">0</strong><small>Writing days</small></div>
+<div class="collection-card"><strong id="streakDays">0</strong><small>Day streak</small></div>
+<div class="collection-card"><strong id="totalEntries">0</strong><small>Pages saved</small></div>
+</div>
+</section>
+
+<section class="page" id="searchPage">
+<div class="eyebrow">FIND A THOUGHT</div><h1 class="page-title">Search</h1><input class="searchbox" id="searchInput" type="search" dir="auto" placeholder="Search your diary…" autocomplete="off" enterkeyhint="search">
+<div class="toolbar-row" id="searchFilters"><button class="pill active" data-filter="All">All</button><button class="pill" data-filter="Quick Note">Notes</button><button class="pill" data-filter="Quran Reflection">Quran</button><button class="pill" data-filter="Diary Entry">Diary</button><button class="pill" data-filter="Creative Writing">Writing</button><button class="pill" data-filter="Voice Note">Voice</button></div>
+<div id="searchResults" class="entry-list"><div class="empty">Your saved thoughts will appear here.</div></div>
+</section>
+
+<section class="page" id="settingsPage">
+<div class="eyebrow">MAKE IT YOURS</div><h1 class="page-title">Settings</h1><p class="subtle">Your space, your preferences.</p>
+<div class="settings-list">
+<div class="setting"><div><strong>Daily writing goal</strong><small>Words to write each day</small></div><input id="goalSetting" type="number" inputmode="numeric" min="1" max="10000" value="100"></div>
+<div class="setting"><div><strong>Appearance</strong><small>Switch between light and dark</small></div><button class="secondary" id="settingsTheme">Toggle theme</button></div>
+<div class="setting col"><div><strong>Haptic feedback</strong><small>Gentle vibration for taps, saving, recording and milestones</small></div><div class="seg" id="hapticSeg"><button class="pill" data-haptic-level="0">Off</button><button class="pill" data-haptic-level="1">Soft</button><button class="pill" data-haptic-level="2">Normal</button><button class="pill" data-haptic-level="3">Strong</button></div></div>
+<div class="setting"><div><strong>Writing prompts</strong><small>Get a little inspiration</small></div><button class="secondary" id="promptBtn">Show prompt</button></div>
+<div class="setting"><div><strong>Full backup</strong><small id="backupInfo">Entries and voice notes as one JSON file</small></div><button class="secondary" id="exportBtn">Export</button></div>
+<div class="setting"><div><strong>Export as text</strong><small>A readable copy of every entry</small></div><button class="secondary" id="exportTextBtn">Export</button></div>
+<div class="setting"><div><strong>Import backup</strong><small>Restore or merge a JSON backup</small></div><button class="secondary" id="importBtn">Choose file</button><input type="file" id="importFile" hidden></div>
+<div class="setting"><div><strong>Offline mode</strong><small>No internet needed to write, record or search</small></div><span class="status" id="offlineStatus">Checking…</span></div>
+<div class="setting hidden" id="installRow"><div><strong>Install app</strong><small>Add My Diary to your home screen</small></div><button class="secondary" id="installBtn">Install</button></div>
+<div class="setting"><div><strong>Storage</strong><small id="storageInfo">Calculating…</small></div><span class="status" id="persistStatus"></span></div>
+<div class="setting"><div><strong>About My Diary</strong><small>Your thoughts. Your words. Your space.</small></div><span id="versionLabel">v3.0</span></div>
+</div>
+<p class="subtle" style="margin-top:20px;line-height:1.6">Everything stays on this device. Entries are saved automatically as you write. If you ever change phones or reinstall the app, export a full backup first and import it on the new device.</p>
+</section>
+</main>
+</div>
+
+<button class="fab" id="fab" aria-label="Create a new entry">＋</button>
+<nav class="bottom-nav" aria-label="Main">
+<button class="nav-item active" data-page="homePage"><span class="nav-icon">⌂</span>Home</button>
+<button class="nav-item" data-page="collectionsPage"><span class="nav-icon">▦</span>Collections</button>
+<button class="nav-item" data-page="journalPage"><span class="nav-icon">▣</span>Journal</button>
+<button class="nav-item" data-page="searchPage"><span class="nav-icon">⌕</span>Search</button>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="modal-backdrop" id="createModal" role="dialog" aria-modal="true" aria-label="Start something new"><div class="sheet"><div class="sheet-head"><h2>Start something new</h2><button class="close" data-close="createModal" aria-label="Close">×</button></div><div class="type-grid">
+<button class="type-choice" data-create="Quick Note"><span>✎</span><strong>Quick Note</strong></button>
+<button class="type-choice" data-create="Quran Reflection"><span>☾</span><strong>Quran Reflection</strong></button>
+<button class="type-choice" data-create="Diary Entry"><span>▤</span><strong>Diary Entry</strong></button>
+<button class="type-choice" data-create="Creative Writing"><span>✧</span><strong>Creative Writing</strong></button>
+<button class="type-choice wide" data-create="Voice Note"><span>🎙</span><strong>Voice Note</strong></button>
+</div></div></div>
+
+<div class="modal-backdrop" id="editorModal" role="dialog" aria-modal="true" aria-label="Entry editor"><div class="sheet">
+<div class="sheet-head"><h2 id="editorHeading">New entry</h2><button class="close" data-close="editorModal" aria-label="Close and save">×</button></div>
+<div class="form-field"><label for="entryType">ENTRY TYPE</label><select id="entryType"><option>Quick Note</option><option>Quran Reflection</option><option>Diary Entry</option><option>Creative Writing</option><option>Voice Note</option></select></div>
+<div class="form-field"><label for="entryTitle">TITLE</label><input id="entryTitle" dir="auto" placeholder="Give this page a title…" enterkeyhint="next"></div>
+<div class="form-field"><label for="entryCollection">COLLECTION</label><select id="entryCollection"></select></div>
+<div class="editor-extra" id="quranFields">
+<div class="form-field"><label for="surah">SURAH</label><input id="surah" dir="auto" placeholder="e.g. Al-Baqarah"></div>
+<div class="form-field"><label for="ayah">AYAH / RANGE</label><input id="ayah" dir="auto" placeholder="e.g. 2:255"></div>
+<div class="form-field"><label for="tafseer">TAFSEER SOURCE</label><input id="tafseer" dir="auto" placeholder="Book, scholar or source"></div>
+<div class="form-field"><label for="lesson">LESSON UNDERSTOOD</label><textarea id="lesson" dir="auto" placeholder="What did you understand?"></textarea></div>
+<div class="form-field"><label for="reflection">PERSONAL REFLECTION</label><textarea id="reflection" dir="auto" placeholder="Your own thoughts and reflections…"></textarea></div>
+<div class="form-field"><label for="actionPoint">ACTION POINT</label><textarea id="actionPoint" dir="auto" placeholder="What will you try to act upon?"></textarea></div>
+</div>
+<div class="form-field" id="voiceField"><label>VOICE NOTES</label>
+<div class="voice-box">
+<div class="rec-row"><button class="rec-btn" id="recBtn" data-hx="none" aria-label="Start recording">●</button><div class="rec-info"><strong id="recLabel">Tap to record</strong><small id="recTime">Recorded on this device, works offline</small></div></div>
+<div class="clip-list" id="clipList"></div>
+</div></div>
+<div class="form-field"><label>YOUR WRITING</label><div class="editor-tools" id="editorTools">
+<button data-command="undo" title="Undo" aria-label="Undo">↶</button><button data-command="redo" title="Redo" aria-label="Redo">↷</button><button data-command="formatBlock" data-value="H2" aria-label="Heading">H</button><button data-command="bold" aria-label="Bold"><b>B</b></button><button data-command="italic" aria-label="Italic"><i>I</i></button><button data-command="underline" aria-label="Underline"><u>U</u></button><button data-command="insertUnorderedList">• List</button><button data-command="insertOrderedList">1. List</button><button data-command="formatBlock" data-value="BLOCKQUOTE" aria-label="Quote">❝</button></div>
+<div id="editorBody" class="editor-area" dir="auto" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Your writing"></div>
+<div class="editor-status"><span id="saveStatus">Not saved yet</span><span id="wordCount">0 words</span></div></div>
+<div class="form-field"><label for="entryTags">TAGS (COMMA SEPARATED)</label><input id="entryTags" dir="auto" placeholder="ideas, important, personal"></div>
+<button class="primary" id="saveEntry" data-hx="none">Save entry</button><button class="secondary danger" id="deleteEntry" data-hx="none" style="width:100%;margin-top:9px;display:none">Delete entry</button>
+</div></div>
+
+<div class="modal-backdrop" id="collectionModal" role="dialog" aria-modal="true"><div class="sheet"><div class="sheet-head"><h2 id="collectionHeading">New collection</h2><button class="close" data-close="collectionModal" aria-label="Close">×</button></div><div class="form-field"><label for="collectionName">COLLECTION NAME</label><input id="collectionName" dir="auto" maxlength="60" placeholder="e.g. Book Notes"></div><button class="primary" id="saveCollection" data-hx="none">Create collection</button><button class="danger-btn hidden" id="deleteCollection" data-hx="none">Delete collection</button><p class="hint hidden" id="deleteCollectionHint">Entries inside are kept and moved to “Unsorted”.</p></div></div>
+
+<div class="modal-backdrop" id="promptModal" role="dialog" aria-modal="true"><div class="sheet"><div class="sheet-head"><h2>A thought to begin with</h2><button class="close" data-close="promptModal" aria-label="Close">×</button></div><p id="promptText" dir="auto" style="font:22px/1.5 Georgia,serif"></p><button class="primary" id="usePrompt">Write about this</button><button class="secondary" id="anotherPrompt" style="width:100%;margin-top:9px">Another prompt</button></div></div>
+
+<div class="modal-backdrop" id="confirmModal" role="alertdialog" aria-modal="true"><div class="sheet"><div class="sheet-head"><h2 id="confirmTitle">Are you sure?</h2></div><p class="confirm-text" id="confirmText"></p><button class="primary" id="confirmOk" data-hx="none">Confirm</button><button class="secondary" id="confirmCancel" style="width:100%;margin-top:9px">Cancel</button></div></div>
+
+<script>
+(() => {
+'use strict';
+
+/* ------------------------------------------------------------------ *
+ *  MY DIARY v3.0.0
+ *  Offline-first journal · voice notes · autosave · haptics · backups
+ * ------------------------------------------------------------------ */
+const APP_VERSION = '3.0.0';
+const DB_NAME = 'myDiaryDB', DB_VERSION = 1, STORE = 'entries', COLLECTIONS = 'collections';
+const TYPES = ['Quick Note', 'Quran Reflection', 'Diary Entry', 'Creative Writing', 'Voice Note'];
+const MAX_REC_SECONDS = 20 * 60;
+
+const $ = id => document.getElementById(id);
+const rnd = () => Math.random().toString(36).slice(2, 8);
+const pad = n => String(n).padStart(2, '0');
+const todayKey = (d = new Date()) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const validDayKey = k => typeof k === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(k);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtTime = s => { s = Math.max(0, Math.round(s || 0)); return `${Math.floor(s / 60)}:${pad(s % 60)}`; };
+const fmtBytes = b => b < 1024 ? b + ' B' : b < 1048576 ? (b / 1024).toFixed(0) + ' KB' : (b / 1048576).toFixed(1) + ' MB';
+
+/* Safe localStorage (can throw in private mode / locked-down WebViews) */
+const LS = {
+  get(k, d = null) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, String(v)); return true; } catch { return false; } }
+};
+
+/* ------------------------------ Platform ----------------------------- */
+const Cap = window.Capacitor;
+const isNative = !!(Cap && typeof Cap.isNativePlatform === 'function' && Cap.isNativePlatform());
+const platform = (() => { try { return Cap?.getPlatform?.() || 'web'; } catch { return 'web'; } })();
+function nativeCall(plugin, method, options) {
+  try {
+    if (Cap && typeof Cap.nativePromise === 'function') return Cap.nativePromise(plugin, method, options || {});
+    const p = Cap?.Plugins?.[plugin];
+    if (p && typeof p[method] === 'function') return p[method](options || {});
+  } catch (e) { console.warn('native call failed', plugin, method, e); }
+  return Promise.reject(new Error('Native plugin unavailable: ' + plugin));
+}
+
+/* ------------------------------ Haptics ------------------------------ *
+ * Patterns are sequences of [kind, msUntilNextStep].
+ * Android (native) → exact-duration pulses via the Haptics plugin
+ * iOS (native)     → Taptic engine styles
+ * Browser / PWA    → navigator.vibrate patterns
+ * ------------------------------------------------------------------- */
+const Haptics = (() => {
+  const KIND_MS = { tick: [0, 6, 9, 13], light: [0, 10, 15, 22], med: [0, 18, 28, 40], heavy: [0, 30, 44, 62] };
+  const IOS_STYLE = { light: ['LIGHT', 'LIGHT', 'MEDIUM'], med: ['LIGHT', 'MEDIUM', 'HEAVY'], heavy: ['MEDIUM', 'HEAVY', 'HEAVY'] };
+  const PATTERNS = {
+    tick: [['tick', 0]], nav: [['tick', 0]], soft: [['tick', 0]], type: [['tick', 0]],
+    tap: [['light', 0]], press: [['med', 0]], thud: [['heavy', 0]],
+    success: [['light', 75], ['med', 0]],
+    celebrate: [['light', 70], ['light', 70], ['med', 85], ['heavy', 0]],
+    warn: [['med', 85], ['med', 0]],
+    error: [['heavy', 75], ['light', 65], ['heavy', 0]],
+    recStart: [['med', 60], ['heavy', 0]],
+    recStop: [['heavy', 85], ['light', 0]],
+    on: [['tick', 55], ['light', 0]], off: [['light', 55], ['tick', 0]],
+    sun: [['tick', 50], ['light', 50], ['med', 0]],
+    moon: [['med', 65], ['light', 65], ['tick', 0]]
+  };
+  let level = Number(LS.get('myDiaryHapticsLevel', '2'));
+  if (!(level >= 0 && level <= 3)) level = 2;
+  let token = 0, last = 0, timers = [];
+
+  const ms = k => KIND_MS[k][level] || KIND_MS[k][2];
+  function fire(kind) {
+    if (isNative && platform === 'ios') {
+      if (kind === 'tick') nativeCall('Haptics', 'selectionChanged').catch(() => {});
+      else nativeCall('Haptics', 'impact', { style: IOS_STYLE[kind][level - 1] }).catch(() => {});
+    } else if (isNative) {
+      nativeCall('Haptics', 'vibrate', { duration: ms(kind) }).catch(() => { if (navigator.vibrate) navigator.vibrate(ms(kind)); });
+    } else if (navigator.vibrate) {
+      navigator.vibrate(ms(kind));
+    }
+  }
+  function webPattern(seq) {
+    const out = [];
+    seq.forEach(([kind, gap], i) => {
+      const d = ms(kind); out.push(d);
+      if (i < seq.length - 1) out.push(Math.max(gap, d + 25) - d);
+    });
+    return out;
+  }
+  function play(name) {
+    if (!level) return;
+    const seq = PATTERNS[name] || PATTERNS.tap;
+    const now = performance.now();
+    if (seq.length === 1 && now - last < 28) return;
+    last = now;
+    token++; timers.forEach(clearTimeout); timers = [];
+    if (!isNative) { if (navigator.vibrate) navigator.vibrate(seq.length === 1 ? ms(seq[0][0]) : webPattern(seq)); return; }
+    const my = token; let t = 0;
+    seq.forEach(([kind, gap]) => {
+      if (t === 0) fire(kind); else timers.push(setTimeout(() => { if (my === token) fire(kind); }, t));
+      t += Math.max(gap, ms(kind) + 25);
+    });
+  }
+  return {
+    play,
+    get level() { return level; },
+    setLevel(n) { level = n; LS.set('myDiaryHapticsLevel', n); },
+    supported: () => isNative || !!navigator.vibrate
+  };
+})();
+const play = n => Haptics.play(n);
+
+/* ----------------------------- Database ------------------------------ */
+let db = null;
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = () => {
+      const d = req.result;
+      if (!d.objectStoreNames.contains(STORE)) { const st = d.createObjectStore(STORE, { keyPath: 'id' }); st.createIndex('updatedAt', 'updatedAt'); }
+      if (!d.objectStoreNames.contains(COLLECTIONS)) d.createObjectStore(COLLECTIONS, { keyPath: 'id' });
+    };
+    req.onsuccess = () => {
+      const d = req.result;
+      d.onversionchange = () => { d.close(); db = null; };
+      d.onclose = () => { db = null; };
+      resolve(d);
+    };
+    req.onerror = () => reject(req.error || new Error('IndexedDB open failed'));
+    req.onblocked = () => reject(new Error('IndexedDB blocked'));
+  });
+}
+async function run(store, mode, fn) {
+  if (!db) db = await openDB();
+  return new Promise((resolve, reject) => {
+    let t, out;
+    try { t = db.transaction(store, mode); out = fn(t.objectStore(store)); }
+    catch (e) { reject(e); return; }
+    t.oncomplete = () => resolve(out && 'result' in out ? out.result : undefined);
+    t.onerror = () => reject(t.error);
+    t.onabort = () => reject(t.error || new Error('Transaction aborted'));
+  });
+}
+const all = store => run(store, 'readonly', s => s.getAll()).then(r => r || []);
+const put = (store, item) => run(store, 'readwrite', s => { s.put(item); });
+const putMany = (store, items) => run(store, 'readwrite', s => { items.forEach(i => s.put(i)); });
+const del = (store, id) => run(store, 'readwrite', s => { s.delete(id); });
+
+/* --------------------------- Content helpers ------------------------- */
+const ALLOWED = new Set(['P', 'DIV', 'BR', 'B', 'STRONG', 'I', 'EM', 'U', 'H1', 'H2', 'H3', 'BLOCKQUOTE', 'UL', 'OL', 'LI']);
+const DROP = new Set(['SCRIPT', 'STYLE', 'IFRAME', 'OBJECT', 'EMBED', 'LINK', 'META', 'NOSCRIPT', 'TEMPLATE', 'SVG', 'MATH', 'IMG', 'VIDEO', 'AUDIO', 'FORM', 'INPUT', 'BUTTON', 'TEXTAREA', 'SELECT']);
+function sanitize(html) {
+  const doc = new DOMParser().parseFromString('<body>' + (html || '') + '</body>', 'text/html');
+  const out = document.createElement('div');
+  (function walk(src, dst) {
+    src.childNodes.forEach(c => {
+      if (c.nodeType === 3) dst.appendChild(document.createTextNode(c.nodeValue));
+      else if (c.nodeType === 1) {
+        const t = c.tagName.toUpperCase();
+        if (DROP.has(t)) return;
+        if (ALLOWED.has(t)) { const el = document.createElement(t.toLowerCase()); walk(c, el); dst.appendChild(el); }
+        else walk(c, dst);
+      }
+    });
+  })(doc.body, out);
+  return out.innerHTML;
+}
+const BLOCKS = new Set(['P', 'DIV', 'H1', 'H2', 'H3', 'BLOCKQUOTE', 'UL', 'OL']);
+function htmlToText(html) {
+  const doc = new DOMParser().parseFromString('<body>' + (html || '') + '</body>', 'text/html');
+  let out = '';
+  (function walk(n, listType, idx) {
+    n.childNodes.forEach(c => {
+      if (c.nodeType === 3) out += c.nodeValue;
+      else if (c.nodeType === 1) {
+        const t = c.tagName.toUpperCase();
+        if (t === 'BR') { out += '\n'; return; }
+        if (t === 'LI') { out += '\n' + (listType === 'OL' ? (++idx.n) + '. ' : '• '); walk(c, listType, idx); return; }
+        const block = BLOCKS.has(t);
+        if (block) out += '\n';
+        walk(c, t === 'OL' || t === 'UL' ? t : listType, t === 'OL' || t === 'UL' ? { n: 0 } : idx);
+        if (block) out += '\n';
+      }
+    });
+  })(doc.body, null, { n: 0 });
+  return out.replace(/\u00a0/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+}
+const strip = s => htmlToText(s).replace(/\s+/g, ' ').trim();
+const countWords = s => (htmlToText(s).match(/\S+/g) || []).length;
+
+function normalizeEntry(e) {
+  const now = Date.now();
+  const createdAt = Number(e.createdAt) || Number(e.updatedAt) || now;
+  const dayKey = validDayKey(e.dayKey) ? e.dayKey : todayKey(new Date(createdAt));
+  const content = sanitize(e.content || '');
+  let wordsByDay = {};
+  if (e.wordsByDay && typeof e.wordsByDay === 'object') {
+    Object.entries(e.wordsByDay).forEach(([k, v]) => { if (validDayKey(k) && Number(v) > 0) wordsByDay[k] = Math.round(Number(v)); });
+  } else if (Number(e.wordsAdded) > 0) wordsByDay[dayKey] = Math.round(Number(e.wordsAdded));
+  const audio = (Array.isArray(e.audio) ? e.audio : []).filter(a => a && a.blob instanceof Blob).map(a => ({
+    id: String(a.id || 'a_' + Date.now() + '_' + rnd()), mime: String(a.mime || a.blob.type || 'audio/webm'),
+    duration: Number(a.duration) || 0, createdAt: Number(a.createdAt) || createdAt, blob: a.blob
+  }));
+  return {
+    id: String(e.id || 'e_' + now + '_' + rnd()),
+    title: String(e.title || ''), type: TYPES.includes(e.type) ? e.type : 'Quick Note',
+    content, collectionId: e.collectionId ? String(e.collectionId) : '',
+    tags: Array.isArray(e.tags) ? e.tags.map(t => String(t).trim()).filter(Boolean) : [],
+    surah: String(e.surah || ''), ayah: String(e.ayah || ''), tafseer: String(e.tafseer || ''),
+    lesson: String(e.lesson || ''), reflection: String(e.reflection || ''), actionPoint: String(e.actionPoint || ''),
+    createdAt, updatedAt: Number(e.updatedAt) || createdAt, dayKey, wordsByDay, audio,
+    wordCount: countWords(content)
+  };
+}
+
+/* ------------------------------- State ------------------------------- */
+let entries = [], collections = [];
+let activeFilter = 'All', collectionFilter = '';
+let selectedDate = new Date(), calendarMonth = new Date();
+let storageOK = true;
+
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+/* ---------------------- Modals + Android back button ----------------- */
+const modalStack = [];
+let ignorePop = 0;
+function syncHistory() {
+  setTimeout(() => {
+    const has = !!(history.state && history.state.dm === 1);
+    if (modalStack.length && !has) history.pushState({ dm: 1 }, '');
+    else if (!modalStack.length && has) { ignorePop++; history.back(); }
+  }, 0);
+}
+function showModal(id) {
+  if (modalStack.includes(id)) return;
+  $(id).classList.add('show'); modalStack.push(id);
+  document.body.classList.add('modal-open');
+  play('soft'); syncHistory();
+}
+function hideModal(id) {
+  const i = modalStack.indexOf(id); if (i < 0) return;
+  modalStack.splice(i, 1); $(id).classList.remove('show');
+  if (!modalStack.length) document.body.classList.remove('modal-open');
+  syncHistory();
+}
+let confirmResolve = null;
+function requestClose(id) {
+  if (id === 'editorModal') return closeEditor();
+  if (id === 'confirmModal') return settleConfirm(false);
+  hideModal(id);
+}
+window.addEventListener('popstate', () => {
+  if (ignorePop > 0) { ignorePop--; return; }
+  if (modalStack.length) requestClose(modalStack[modalStack.length - 1]);
+});
+function askConfirm({ title = 'Are you sure?', text = '', ok = 'Confirm', danger = false }) {
+  return new Promise(resolve => {
+    if (confirmResolve) confirmResolve(false);
+    confirmResolve = resolve;
+    $('confirmTitle').textContent = title; $('confirmText').textContent = text;
+    const b = $('confirmOk'); b.textContent = ok; b.classList.toggle('danger-btn', danger); b.classList.toggle('primary', !danger);
+    b.style.marginTop = '10px';
+    showModal('confirmModal');
+  });
+}
+function settleConfirm(v) {
+  const r = confirmResolve; confirmResolve = null;
+  hideModal('confirmModal'); if (r) r(v);
+}
+
+/* ------------------------------- Theme ------------------------------- */
+function isDark() { const t = LS.get('myDiaryTheme'); return t ? t === 'dark' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches); }
+function applyTheme() {
+  const dark = isDark();
+  document.body.classList.toggle('dark', dark);
+  $('themeBtn').textContent = dark ? '☀' : '☾';
+  $('settingsTheme').textContent = dark ? 'Switch to light' : 'Switch to dark';
+  document.querySelector('meta[name="theme-color"]').content = dark ? '#171E1A' : '#F5F1E8';
+  if (isNative) nativeCall('SystemBars', 'setStyle', { style: dark ? 'DARK' : 'LIGHT' }).catch(() => {});
+}
+function toggleTheme() {
+  LS.set('myDiaryTheme', isDark() ? 'light' : 'dark'); applyTheme();
+  play(isDark() ? 'moon' : 'sun');
+}
+
+/* ------------------------------ Rendering ---------------------------- */
+const getGoal = () => Math.max(1, Number(LS.get('myDiaryGoal', 100)) || 100);
+const dateLabel = (d = new Date()) => d.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+const defaultCollections = () => [
+  { id: 'quran', name: 'Quran Reflections', color: '#B99A65' }, { id: 'diary', name: 'Personal Diary', color: '#77947E' },
+  { id: 'creative', name: 'Creative Writing', color: '#9C8060' }, { id: 'ideas', name: 'Ideas & Quick Notes', color: '#7D8D9C' }
+];
+const collectionForType = t => t === 'Quran Reflection' ? 'quran' : t === 'Diary Entry' ? 'diary' : t === 'Creative Writing' ? 'creative' : 'ideas';
+const wordsOn = key => entries.reduce((n, e) => n + (e.wordsByDay?.[key] || 0), 0);
+
+async function refresh() {
+  const raw = await all(STORE);
+  const migrate = [];
+  entries = raw.map(r => { const n = normalizeEntry(r); if (r.wordsByDay === undefined || r.wordsAdded !== undefined) migrate.push(n); return n; })
+    .sort((a, b) => b.updatedAt - a.updatedAt);
+  if (migrate.length) { try { await putMany(STORE, migrate.map(stripRuntime)); } catch (e) { console.warn('migration skipped', e); } }
+  collections = await all(COLLECTIONS);
+  if (!collections.length && !LS.get('myDiarySeeded')) {
+    await putMany(COLLECTIONS, defaultCollections()); collections = await all(COLLECTIONS);
+  }
+  if (collections.length) LS.set('myDiarySeeded', '1');
+  renderAll();
+}
+const stripRuntime = e => { const { wordCount, ...rest } = e; return rest; };
+function renderAll() { renderHome(); renderCollections(); renderSearch(); renderCalendar(); renderStorageInfo(); }
+
+function card(e) {
+  const preview = strip(e.content) || e.lesson || e.reflection || (e.audio.length ? 'Voice note' : 'No written content');
+  const c = collections.find(x => x.id === e.collectionId);
+  const secs = e.audio.reduce((n, a) => n + (a.duration || 0), 0);
+  const badge = e.audio.length ? `<span class="entry-badge">🎙 ${e.audio.length} · ${fmtTime(secs)}</span>` : '';
+  return `<article class="entry-card" data-open="${esc(e.id)}"><div class="entry-main"><h3 class="entry-title" dir="auto">${esc(e.title || 'Untitled entry')}</h3><div class="entry-preview" dir="auto">${esc(preview)}</div><div class="entry-meta"><span>${esc(e.type)} · ${new Date(e.updatedAt).toLocaleDateString()} · ${esc(c?.name || 'Unsorted')}</span>${badge}</div></div><button class="entry-open" tabindex="-1" aria-label="Open entry">OPEN</button></article>`;
+}
+function renderHome() {
+  const goal = getGoal(), words = wordsOn(todayKey());
+  $('todayLabel').textContent = dateLabel().toUpperCase();
+  $('goalCount').textContent = `${words} / ${goal} words`;
+  $('goalProgress').style.width = Math.min(100, words / goal * 100) + '%';
+  $('goalFoot').textContent = words >= goal ? 'You reached your daily goal. Well done.' : `${Math.max(0, goal - words)} words to reach today's goal.`;
+  $('homeCollections').innerHTML = collections.slice(0, 4).map(c => `<button class="collection-card" data-collection="${esc(c.id)}"><strong><span class="dot"></span>${esc(c.name)}</strong><small>${entries.filter(e => e.collectionId === c.id).length} entries</small></button>`).join('');
+  $('recentEntries').innerHTML = entries.length ? entries.slice(0, 4).map(card).join('') : '<div class="empty"><div class="big">✧</div>Every meaningful page begins with a first word.</div>';
+}
+function renderCollections() {
+  $('collectionList').innerHTML = collections.length ? collections.map(c => `<article class="entry-card"><div class="entry-main"><h3 class="entry-title" dir="auto">${esc(c.name)}</h3><div class="entry-preview">${entries.filter(e => e.collectionId === c.id).length} saved entries</div></div><div class="entry-actions"><button class="entry-open" data-collection="${esc(c.id)}">VIEW</button><button class="entry-open" data-edit-collection="${esc(c.id)}">EDIT</button></div></article>`).join('') : '<div class="empty">No collections yet. Tap “New collection” to create one.</div>';
+  let list = entries, title = 'All entries';
+  if (collectionFilter === '__none') { list = entries.filter(e => !collections.some(c => c.id === e.collectionId)); title = 'Unsorted'; }
+  else if (collectionFilter) { const c = collections.find(x => x.id === collectionFilter); if (c) { list = entries.filter(e => e.collectionId === c.id); title = c.name; } else collectionFilter = ''; }
+  $('allEntriesTitle').textContent = title;
+  $('allEntriesPill').classList.toggle('active', !collectionFilter);
+  $('allEntries').innerHTML = list.length ? list.map(card).join('') : `<div class="empty">${collectionFilter ? 'This collection is empty.' : 'No entries yet. Create your first page.'}</div>`;
+  const unsorted = entries.some(e => !collections.some(c => c.id === e.collectionId));
+  if (unsorted && !$('collectionList').querySelector('[data-collection="__none"]')) {
+    $('collectionList').insertAdjacentHTML('beforeend', `<article class="entry-card"><div class="entry-main"><h3 class="entry-title">Unsorted</h3><div class="entry-preview">Entries without a collection</div></div><div class="entry-actions"><button class="entry-open" data-collection="__none">VIEW</button></div></article>`);
+  }
+}
+function renderSearch() {
+  const q = ($('searchInput')?.value || '').toLowerCase().trim();
+  let list = entries.filter(e => activeFilter === 'All' || e.type === activeFilter);
+  if (q) list = list.filter(e => (e.title + ' ' + strip(e.content) + ' ' + e.tags.join(' ') + ' ' + e.surah + ' ' + e.ayah + ' ' + e.tafseer + ' ' + e.lesson + ' ' + e.reflection + ' ' + e.actionPoint).toLowerCase().includes(q));
+  $('searchResults').innerHTML = list.length ? list.map(card).join('') : `<div class="empty">${entries.length ? 'No matching entries found.' : 'Your saved thoughts will appear here.'}</div>`;
+}
+function activityDays() {
+  const s = new Set();
+  entries.forEach(e => { Object.entries(e.wordsByDay).forEach(([d, n]) => { if (n > 0) s.add(d); }); if (e.audio.length) s.add(e.dayKey); });
+  return s;
+}
+function currentStreak(set) {
+  const d = new Date(); d.setHours(12, 0, 0, 0);
+  if (!set.has(todayKey(d))) d.setDate(d.getDate() - 1);
+  let n = 0; while (set.has(todayKey(d))) { n++; d.setDate(d.getDate() - 1); }
+  return n;
+}
+function renderCalendar() {
+  const y = calendarMonth.getFullYear(), m = calendarMonth.getMonth();
+  $('monthLabel').textContent = calendarMonth.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+  const start = (new Date(y, m, 1).getDay() + 6) % 7, days = new Date(y, m + 1, 0).getDate();
+  const has = new Set(entries.map(e => e.dayKey)), sel = todayKey(selectedDate), today = todayKey();
+  let html = ['M', 'T', 'W', 'T', 'F', 'S', 'S'].map(x => `<span>${x}</span>`).join('');
+  for (let i = 0; i < start; i++) html += '<span></span>';
+  for (let d = 1; d <= days; d++) {
+    const key = todayKey(new Date(y, m, d));
+    html += `<button class="cal-day ${key === today ? 'today' : ''} ${key === sel ? 'selected' : ''} ${has.has(key) ? 'has-entry' : ''}" data-day="${key}">${d}</button>`;
+  }
+  $('calendarGrid').innerHTML = html; renderDayEntries();
+}
+function renderDayEntries() {
+  const key = todayKey(selectedDate);
+  $('selectedDateTitle').textContent = (key === todayKey() ? 'Today, ' : '') + selectedDate.toLocaleDateString(undefined, { day: 'numeric', month: 'long' }) + ' entries';
+  const list = entries.filter(e => e.dayKey === key);
+  $('dayEntries').innerHTML = list.length ? list.map(card).join('') : '<div class="empty">Nothing written on this date yet.</div>';
+  const act = activityDays();
+  $('totalWords').textContent = entries.reduce((n, e) => n + e.wordCount, 0).toLocaleString();
+  $('activeDays').textContent = act.size; $('streakDays').textContent = currentStreak(act); $('totalEntries').textContent = entries.length;
+}
+function goto(page, opts = {}) {
+  if (page === 'collectionsPage' && !opts.keepFilter) collectionFilter = '';
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === page));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === page));
+  $('fab').style.display = page === 'settingsPage' ? 'none' : 'block';
+  if (page === 'journalPage') renderCalendar();
+  if (page === 'searchPage') renderSearch();
+  if (page === 'collectionsPage') renderCollections();
+  if (page === 'homePage') renderHome();
+  if (page === 'settingsPage') { $('goalSetting').value = getGoal(); renderSettings(); }
+  window.scrollTo(0, 0);
+}
+
+/* ------------------------------- Editor ------------------------------ */
+let ed = null, dirty = false, editVersion = 0, saveTimer = null, saveQueue = Promise.resolve();
+let collectionTouched = false, closingEditor = false, savedRange = null;
+
+function markDirty() {
+  if (!ed) return;
+  dirty = true; editVersion++;
+  $('saveStatus').textContent = 'Typing…';
+  clearTimeout(saveTimer); saveTimer = setTimeout(persistNow, 1200);
+}
+function updateWordCount() { $('wordCount').textContent = countWords($('editorBody').innerHTML) + ' words'; }
+
+function startCreate(type = 'Quick Note', entry = null) {
+  ed = {
+    id: entry?.id || null, createdAt: entry?.createdAt || null, dayKey: entry?.dayKey || null,
+    wordsByDay: { ...(entry?.wordsByDay || {}) }, savedWords: entry ? entry.wordCount : 0,
+    audio: [...(entry?.audio || [])], deleted: false
+  };
+  dirty = false; collectionTouched = !!entry;
+  $('editorHeading').textContent = entry ? 'Edit entry' : 'New ' + type;
+  $('entryType').value = entry?.type || type;
+  $('entryTitle').value = entry?.title || '';
+  $('editorBody').innerHTML = entry?.content || '';
+  $('entryTags').value = (entry?.tags || []).join(', ');
+  renderCollectionOptions(entry ? entry.collectionId : collectionForType(type));
+  ['surah', 'ayah', 'tafseer', 'lesson', 'reflection', 'actionPoint'].forEach(k => { $(k).value = entry?.[k] || ''; });
+  $('quranFields').classList.toggle('show', $('entryType').value === 'Quran Reflection');
+  $('deleteEntry').style.display = entry ? 'block' : 'none';
+  $('saveStatus').textContent = entry ? 'Saved' : 'Not saved yet';
+  setRecordingUI(false); renderClips(); updateWordCount();
+  showModal('editorModal');
+  if (!entry && type !== 'Voice Note') setTimeout(() => { if (!$('editorModal').contains(document.activeElement)) $('entryTitle').focus(); }, 160);
+}
+function renderCollectionOptions(selected) {
+  const opts = collections.map(c => `<option value="${esc(c.id)}">${esc(c.name)}</option>`);
+  opts.push('<option value="">Unsorted</option>');
+  $('entryCollection').innerHTML = opts.join('');
+  $('entryCollection').value = collections.some(c => c.id === selected) ? selected : '';
+}
+function readForm() {
+  return {
+    title: $('entryTitle').value.trim(), type: $('entryType').value, content: sanitize($('editorBody').innerHTML),
+    collectionId: $('entryCollection').value,
+    tags: $('entryTags').value.split(',').map(x => x.trim()).filter(Boolean),
+    surah: $('surah').value.trim(), ayah: $('ayah').value.trim(), tafseer: $('tafseer').value.trim(),
+    lesson: $('lesson').value.trim(), reflection: $('reflection').value.trim(), actionPoint: $('actionPoint').value.trim()
+  };
+}
+function persistNow() {
+  clearTimeout(saveTimer);
+  saveQueue = saveQueue.then(doPersist).catch(err => {
+    console.error('save failed', err);
+    $('saveStatus').textContent = 'Could not save';
+    toast(err && err.name === 'QuotaExceededError' ? 'Storage is full. Export a backup and free some space.' : 'Could not save. Please try again.');
+    play('error'); return false;
+  });
+  return saveQueue;
+}
+async function doPersist() {
+  if (!ed || ed.deleted) return false;
+  const f = readForm();
+  const meaningful = f.title || strip(f.content) || f.surah || f.ayah || f.tafseer || f.lesson || f.reflection || f.actionPoint || ed.audio.length;
+  if (!ed.id && !meaningful) return false;
+  if (!dirty && ed.id) return true;
+  const v = editVersion, now = Date.now(), tk = todayKey();
+  const words = countWords(f.content), added = Math.max(0, words - ed.savedWords);
+  const before = wordsOn(tk), goal = getGoal();
+  const isNew = !ed.id;
+  if (isNew) { ed.id = 'e_' + now + '_' + rnd(); ed.createdAt = now; ed.dayKey = tk; }
+  const wordsByDay = { ...ed.wordsByDay }; if (added > 0) wordsByDay[tk] = (wordsByDay[tk] || 0) + added;
+  const entry = { id: ed.id, ...f, createdAt: ed.createdAt, updatedAt: now, dayKey: ed.dayKey, wordsByDay, audio: ed.audio };
+  $('saveStatus').textContent = 'Saving…';
+  await put(STORE, stripRuntime(normalizeEntry(entry)));
+  ed.wordsByDay = wordsByDay; ed.savedWords = words;
+  if (editVersion === v) dirty = false;
+  const n = normalizeEntry(entry), i = entries.findIndex(x => x.id === n.id);
+  if (i >= 0) entries[i] = n; else entries.push(n);
+  entries.sort((a, b) => b.updatedAt - a.updatedAt);
+  renderAll();
+  $('saveStatus').textContent = 'Saved'; $('editorHeading').textContent = 'Edit entry'; $('deleteEntry').style.display = 'block';
+  if (before < goal && wordsOn(tk) >= goal) { play('celebrate'); toast('Daily goal reached. Well done! ✨'); }
+  return true;
+}
+async function closeEditor() {
+  if (closingEditor) return; closingEditor = true;
+  try {
+    if (Rec.active) await stopRecording();
+    await persistNow();
+  } finally {
+    stopPlayback(); revokeClipUrls();
+    hideModal('editorModal'); ed = null; closingEditor = false;
+  }
+}
+async function saveAndClose() {
+  if (!ed) return;
+  const f = readForm();
+  if (!ed.id && !(f.title || strip(f.content) || f.lesson || f.reflection || f.actionPoint || ed.audio.length)) { toast('Write or record something first'); play('warn'); return; }
+  if (Rec.active) await stopRecording();
+  const ok = await persistNow();
+  if (ok === false) return;
+  play('success'); toast('Entry saved on this device');
+  await closeEditor();
+}
+async function deleteEntry() {
+  if (!ed || !ed.id) return;
+  play('warn');
+  const ok = await askConfirm({ title: 'Delete this entry?', text: 'It will be permanently removed from this device, including its voice notes. This cannot be undone.', ok: 'Delete', danger: true });
+  if (!ok) return;
+  clearTimeout(saveTimer); ed.deleted = true; await saveQueue;
+  try {
+    await del(STORE, ed.id); entries = entries.filter(e => e.id !== ed.id); renderAll();
+    play('thud'); toast('Entry deleted');
+    stopPlayback(); revokeClipUrls(); hideModal('editorModal'); ed = null;
+  } catch (e) { ed.deleted = false; console.error(e); toast('Could not delete. Please try again.'); play('error'); }
+}
+
+/* ---- toolbar: keep selection so formatting applies where the caret was ---- */
+document.addEventListener('selectionchange', () => {
+  const sel = getSelection(), body = $('editorBody');
+  if (sel && sel.rangeCount && body.contains(sel.anchorNode)) savedRange = sel.getRangeAt(0).cloneRange();
+});
+function runCommand(cmd, value) {
+  const body = $('editorBody'); body.focus();
+  if (savedRange) { const s = getSelection(); s.removeAllRanges(); s.addRange(savedRange); }
+  if (cmd === 'formatBlock') { try { if (String(document.queryCommandValue('formatBlock')).toLowerCase() === value.toLowerCase()) value = 'P'; } catch {} }
+  document.execCommand(cmd, false, value || null);
+  updateWordCount(); markDirty();
+}
+
+/* ------------------------------ Voice notes -------------------------- */
+const Rec = { active: false, mr: null, stream: null, chunks: [], t0: 0, timer: null, mime: '' };
+const pickMime = () => ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus', 'audio/aac'].find(m => window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || '';
+function setRecordingUI(on, secs = 0) {
+  const b = $('recBtn'); b.classList.toggle('recording', on); b.textContent = on ? '■' : '●';
+  b.setAttribute('aria-label', on ? 'Stop recording' : 'Start recording');
+  $('recLabel').textContent = on ? 'Recording… tap to stop' : (ed && ed.audio.length ? 'Tap to add another' : 'Tap to record');
+  $('recTime').textContent = on ? fmtTime(secs) : 'Recorded on this device, works offline';
+}
+async function startRecording() {
+  if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder)) { toast('Voice recording is not supported on this device'); play('error'); return; }
+  try {
+    Rec.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+  } catch (e) {
+    toast(e && (e.name === 'NotAllowedError' || e.name === 'SecurityError') ? 'Microphone access was denied. Allow it in your phone settings to record.' : 'Could not start the microphone');
+    play('error'); return;
+  }
+  try {
+    Rec.mime = pickMime(); Rec.chunks = [];
+    Rec.mr = new MediaRecorder(Rec.stream, Rec.mime ? { mimeType: Rec.mime } : undefined);
+    Rec.mr.ondataavailable = ev => { if (ev.data && ev.data.size) Rec.chunks.push(ev.data); };
+    Rec.mr.onerror = () => { toast('Recording was interrupted'); stopRecording(); };
+    Rec.mr.start(1000);
+  } catch (e) { console.error(e); releaseMic(); toast('Could not start recording'); play('error'); return; }
+  Rec.active = true; Rec.t0 = Date.now(); play('recStart'); setRecordingUI(true, 0);
+  Rec.timer = setInterval(() => {
+    const s = (Date.now() - Rec.t0) / 1000; $('recTime').textContent = fmtTime(s);
+    if (s >= MAX_REC_SECONDS) { toast('Maximum length reached'); stopRecording(); }
+  }, 250);
+}
+function releaseMic() { try { Rec.stream && Rec.stream.getTracks().forEach(t => t.stop()); } catch {} Rec.stream = null; }
+function stopRecording() {
+  return new Promise(resolve => {
+    clearInterval(Rec.timer);
+    const mr = Rec.mr;
+    const finish = async () => {
+      const secs = Math.round((Date.now() - Rec.t0) / 1000);
+      const type = (mr && mr.mimeType) || Rec.mime || 'audio/webm';
+      const blob = new Blob(Rec.chunks, { type: type.split(';')[0] });
+      Rec.active = false; Rec.mr = null; Rec.chunks = []; releaseMic();
+      play('recStop'); setRecordingUI(false);
+      if (ed && blob.size > 0 && secs >= 1) {
+        ed.audio.push({ id: 'a_' + Date.now() + '_' + rnd(), mime: blob.type || 'audio/webm', duration: secs, createdAt: Date.now(), blob });
+        if (!$('entryTitle').value.trim() && ed.audio.length === 1 && $('entryType').value === 'Voice Note')
+          $('entryTitle').value = 'Voice note · ' + new Date().toLocaleString(undefined, { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+        renderClips(); setRecordingUI(false); markDirty(); await persistNow();
+        toast('Voice note saved');
+      } else if (secs < 1) toast('Recording too short');
+      resolve();
+    };
+    if (!mr || mr.state === 'inactive') { Rec.active = false; releaseMic(); setRecordingUI(false); resolve(); return; }
+    mr.onstop = finish;
+    try { mr.stop(); } catch (e) { console.error(e); finish(); }
+  });
+}
+const clipUrls = new Map();
+let player = null, playingId = null;
+const clipUrl = c => { if (!clipUrls.has(c.id)) clipUrls.set(c.id, URL.createObjectURL(c.blob)); return clipUrls.get(c.id); };
+function revokeClipUrls() { clipUrls.forEach(u => URL.revokeObjectURL(u)); clipUrls.clear(); }
+function renderClips() {
+  const list = ed ? ed.audio : [];
+  $('clipList').innerHTML = list.map(c => `<div class="clip" data-clip="${esc(c.id)}"><button class="play" data-play="${esc(c.id)}" aria-label="Play voice note">▶</button><input type="range" min="0" max="1000" value="0" step="1" data-seek="${esc(c.id)}" aria-label="Seek"><span class="time">${fmtTime(c.duration)}</span><button class="rm" data-rm-clip="${esc(c.id)}" aria-label="Delete voice note">✕</button></div>`).join('');
+}
+function stopPlayback() {
+  if (player) { try { player.pause(); } catch {} player = null; }
+  playingId = null;
+  document.querySelectorAll('.clip .play').forEach(b => { b.textContent = '▶'; });
+}
+function togglePlay(id) {
+  const c = ed && ed.audio.find(a => a.id === id); if (!c) return;
+  if (playingId === id && player) { player.pause(); return; }
+  stopPlayback();
+  const row = document.querySelector(`.clip[data-clip="${CSS.escape(id)}"]`); if (!row) return;
+  const btn = row.querySelector('.play'), rng = row.querySelector('input'), tm = row.querySelector('.time');
+  player = new Audio(clipUrl(c)); playingId = id;
+  const total = () => (isFinite(player.duration) && player.duration > 0 ? player.duration : c.duration) || 1;
+  player.addEventListener('timeupdate', () => { rng.value = Math.min(1000, player.currentTime / total() * 1000); tm.textContent = fmtTime(player.currentTime); });
+  player.addEventListener('pause', () => { btn.textContent = '▶'; if (player && !player.ended) playingId = id; });
+  player.addEventListener('play', () => { btn.textContent = '❚❚'; });
+  player.addEventListener('ended', () => { btn.textContent = '▶'; rng.value = 0; tm.textContent = fmtTime(c.duration); playingId = null; play('tick'); });
+  player.addEventListener('error', () => { toast('This voice note could not be played'); stopPlayback(); });
+  player.play().catch(() => { toast('Could not play audio'); stopPlayback(); });
+}
+function seekClip(id, val) {
+  const c = ed && ed.audio.find(a => a.id === id); if (!c || playingId !== id || !player) return;
+  const total = isFinite(player.duration) && player.duration > 0 ? player.duration : c.duration;
+  try { player.currentTime = total * val / 1000; } catch {}
+}
+async function removeClip(id) {
+  const ok = await askConfirm({ title: 'Delete voice note?', text: 'This recording will be removed from this entry.', ok: 'Delete', danger: true });
+  if (!ok || !ed) return;
+  if (playingId === id) stopPlayback();
+  ed.audio = ed.audio.filter(a => a.id !== id);
+  if (clipUrls.has(id)) { URL.revokeObjectURL(clipUrls.get(id)); clipUrls.delete(id); }
+  renderClips(); setRecordingUI(false); markDirty(); play('thud');
+}
+
+/* ------------------------------ Collections -------------------------- */
+let editingCollectionId = null;
+function openCollectionModal(id = null) {
+  editingCollectionId = id;
+  const c = id && collections.find(x => x.id === id);
+  $('collectionHeading').textContent = c ? 'Edit collection' : 'New collection';
+  $('collectionName').value = c ? c.name : '';
+  $('saveCollection').textContent = c ? 'Save changes' : 'Create collection';
+  $('deleteCollection').classList.toggle('hidden', !c); $('deleteCollectionHint').classList.toggle('hidden', !c);
+  showModal('collectionModal');
+  if (!c) setTimeout(() => $('collectionName').focus(), 160);
+}
+async function saveCollection() {
+  const name = $('collectionName').value.trim();
+  if (!name) { toast('Enter a collection name'); play('warn'); return; }
+  if (collections.some(c => c.id !== editingCollectionId && c.name.toLowerCase() === name.toLowerCase())) { toast('A collection with this name already exists'); play('warn'); return; }
+  try {
+    const existing = editingCollectionId && collections.find(c => c.id === editingCollectionId);
+    await put(COLLECTIONS, existing ? { ...existing, name } : { id: 'c_' + Date.now() + '_' + rnd(), name, color: '#B99A65' });
+    hideModal('collectionModal'); await refresh(); play('success'); toast(existing ? 'Collection updated' : 'Collection created');
+  } catch (e) { console.error(e); toast('Could not save collection'); play('error'); }
+}
+async function deleteCollection() {
+  const c = collections.find(x => x.id === editingCollectionId); if (!c) return;
+  play('warn');
+  const n = entries.filter(e => e.collectionId === c.id).length;
+  const ok = await askConfirm({ title: `Delete “${c.name}”?`, text: n ? `${n} ${n === 1 ? 'entry' : 'entries'} will be kept and moved to “Unsorted”.` : 'This collection is empty.', ok: 'Delete collection', danger: true });
+  if (!ok) return;
+  try {
+    const moved = entries.filter(e => e.collectionId === c.id).map(e => stripRuntime({ ...e, collectionId: '' }));
+    if (moved.length) await putMany(STORE, moved);
+    await del(COLLECTIONS, c.id);
+    if (collectionFilter === c.id) collectionFilter = '';
+    hideModal('collectionModal'); await refresh(); play('thud'); toast('Collection deleted');
+  } catch (e) { console.error(e); toast('Could not delete collection'); play('error'); }
+}
+
+/* ------------------------------ Prompts ------------------------------ */
+const PROMPTS = [
+  'What is one lesson from today that you want to remember?', 'Describe a small moment that made you pause today.',
+  'If you could explain one idea you learned recently, what would it be?', 'Write a letter to your future self.',
+  'What is one habit you want to build, and why does it matter?', 'Describe a place using all five senses.',
+  'What question has been on your mind lately?', 'Which ayah has stayed with you, and what is it asking of you?',
+  'What are three things you are grateful for right now?', 'Write about a mistake that taught you something.',
+  'Who has shaped who you are today, and how?', 'What would a peaceful day look like for you?',
+  'Describe something you are afraid of, and what it protects.', 'What is one thing you want to forgive, in yourself or someone else?',
+  'Write about a conversation you keep thinking about.', 'What does home mean to you?'
+];
+let lastPrompt = -1;
+function showPrompt() {
+  let i; do { i = Math.floor(Math.random() * PROMPTS.length); } while (i === lastPrompt && PROMPTS.length > 1);
+  lastPrompt = i; $('promptText').textContent = PROMPTS[i]; showModal('promptModal');
+}
+
+/* ----------------------- Export / import / backup -------------------- */
+const blobToBase64 = blob => new Promise((resolve, reject) => {
+  const r = new FileReader();
+  r.onload = () => resolve(String(r.result).split(',')[1] || '');
+  r.onerror = () => reject(r.error);
+  r.readAsDataURL(blob);
+});
+const base64ToBlob = async (b64, mime) => (await fetch(`data:${mime || 'application/octet-stream'};base64,${b64}`)).blob();
+
+async function encodeEntry(e) {
+  const { wordCount, ...rest } = e;
+  const audio = [];
+  for (const a of e.audio) audio.push({ id: a.id, mime: a.mime, duration: a.duration, createdAt: a.createdAt, data: await blobToBase64(a.blob) });
+  return { ...rest, audio };
+}
+async function decodeEntry(raw) {
+  const audio = [];
+  for (const a of Array.isArray(raw.audio) ? raw.audio : []) {
+    if (a && typeof a.data === 'string' && a.data) audio.push({ id: a.id, mime: a.mime, duration: a.duration, createdAt: a.createdAt, blob: await base64ToBlob(a.data, a.mime) });
+  }
+  return normalizeEntry({ ...raw, audio });
+}
+
+/* Save a file on every platform:
+   Android/iOS app → write to cache + system share sheet (Save to Files / Drive / WhatsApp…)
+   Mobile browser  → Web Share with file when supported
+   Desktop browser → classic download */
+async function saveFile(name, mime, blob) {
+  if (isNative) {
+    const data = await blobToBase64(blob);
+    const res = await nativeCall('Filesystem', 'writeFile', { path: name, data, directory: 'CACHE', recursive: true });
+    await nativeCall('Share', 'share', { title: name, url: res.uri, dialogTitle: 'Save or share your file' });
+    return 'shared';
+  }
+  const file = new File([blob], name, { type: mime });
+  const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (mobile && navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: name }); return 'shared'; }
+    catch (e) { if (e && e.name === 'AbortError') return 'cancelled'; }
+  }
+  const url = URL.createObjectURL(blob), a = document.createElement('a');
+  a.href = url; a.download = name; a.rel = 'noopener'; a.style.display = 'none';
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 4000);
+  return 'downloaded';
+}
+async function exportBackup() {
+  if (!entries.length && !collections.length) { toast('Nothing to export yet'); play('warn'); return; }
+  try {
+    toast('Preparing backup…');
+    const data = { app: 'My Diary', version: 2, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), entries: await Promise.all(entries.map(encodeEntry)), collections };
+    const hasAudio = entries.some(e => e.audio.length);
+    const blob = new Blob([JSON.stringify(data, null, hasAudio ? 0 : 2)], { type: 'application/json' });
+    const r = await saveFile('my-diary-backup-' + todayKey() + '.json', 'application/json', blob);
+    if (r === 'cancelled') return;
+    LS.set('myDiaryLastBackup', Date.now()); renderSettings(); play('success');
+    toast(r === 'downloaded' ? 'Backup downloaded' : 'Backup ready to save');
+  } catch (e) { console.error(e); toast('Export failed. Please try again.'); play('error'); }
+}
+function entriesAsText() {
+  const lines = ['MY DIARY', 'Exported ' + new Date().toLocaleString(), ''];
+  [...entries].sort((a, b) => a.createdAt - b.createdAt).forEach(e => {
+    const c = collections.find(x => x.id === e.collectionId);
+    lines.push('='.repeat(40), e.title || 'Untitled entry', `${e.type} · ${new Date(e.createdAt).toLocaleString()}${c ? ' · ' + c.name : ''}`);
+    if (e.tags.length) lines.push('Tags: ' + e.tags.join(', '));
+    if (e.surah || e.ayah) lines.push(`Quran: ${e.surah} ${e.ayah}`.trim());
+    if (e.tafseer) lines.push('Tafseer: ' + e.tafseer);
+    if (e.audio.length) lines.push(`Voice notes: ${e.audio.length} (included in the full JSON backup)`);
+    lines.push('');
+    const body = htmlToText(e.content); if (body) lines.push(body, '');
+    if (e.lesson) lines.push('Lesson understood:', e.lesson, '');
+    if (e.reflection) lines.push('Personal reflection:', e.reflection, '');
+    if (e.actionPoint) lines.push('Action point:', e.actionPoint, '');
+  });
+  return lines.join('\n');
+}
+async function exportText() {
+  if (!entries.length) { toast('Nothing to export yet'); play('warn'); return; }
+  try {
+    const r = await saveFile('my-diary-' + todayKey() + '.txt', 'text/plain', new Blob(['\ufeff' + entriesAsText()], { type: 'text/plain;charset=utf-8' }));
+    if (r === 'cancelled') return; play('success'); toast(r === 'downloaded' ? 'Text file downloaded' : 'Text file ready to save');
+  } catch (e) { console.error(e); toast('Export failed. Please try again.'); play('error'); }
+}
+async function importBackup(file) {
+  let data;
+  try { data = JSON.parse(await file.text()); } catch { data = null; }
+  if (!data || data.app !== 'My Diary' || !Array.isArray(data.entries)) { toast('That is not a valid My Diary backup'); play('error'); return; }
+  const voice = data.entries.reduce((n, e) => n + (Array.isArray(e.audio) ? e.audio.length : 0), 0);
+  const go = await askConfirm({ title: 'Import this backup?', text: `Found ${data.entries.length} ${data.entries.length === 1 ? 'entry' : 'entries'}${voice ? ' and ' + voice + ' voice ' + (voice === 1 ? 'note' : 'notes') : ''}. Entries already on this device are only replaced if the backup copy is newer.`, ok: 'Import' });
+  if (!go) return;
+  try {
+    toast('Importing…');
+    const byId = new Map(entries.map(e => [e.id, e])); const write = []; let added = 0, updated = 0, skipped = 0;
+    for (const raw of data.entries) {
+      try {
+        const e = await decodeEntry(raw), cur = byId.get(e.id);
+        if (!cur) { added++; write.push(e); } else if (e.updatedAt > cur.updatedAt) { updated++; write.push(e); } else skipped++;
+      } catch { skipped++; }
+    }
+    const have = new Set(collections.map(c => c.id));
+    const cols = (Array.isArray(data.collections) ? data.collections : []).filter(c => c && c.id && c.name && !have.has(String(c.id))).map(c => ({ id: String(c.id), name: String(c.name), color: String(c.color || '#B99A65') }));
+    if (cols.length) await putMany(COLLECTIONS, cols);
+    if (write.length) await putMany(STORE, write.map(stripRuntime));
+    await refresh(); play('success');
+    toast(`Imported: ${added} new, ${updated} updated${skipped ? ', ' + skipped + ' unchanged' : ''}`);
+  } catch (e) { console.error(e); toast('Import failed. Nothing was changed.'); play('error'); }
+}
+
+/* ------------------------- Settings / offline / PWA ------------------ */
+let installEvent = null;
+async function renderStorageInfo() {
+  const voice = entries.reduce((n, e) => n + e.audio.length, 0);
+  let usage = '';
+  try { const est = navigator.storage && navigator.storage.estimate ? await navigator.storage.estimate() : null; if (est && est.usage != null) usage = ' · ' + fmtBytes(est.usage) + ' used'; } catch {}
+  $('storageInfo').textContent = `${entries.length} ${entries.length === 1 ? 'page' : 'pages'} · ${voice} voice ${voice === 1 ? 'note' : 'notes'}${usage}`;
+}
+async function renderSettings() {
+  const last = Number(LS.get('myDiaryLastBackup', 0));
+  $('backupInfo').textContent = last ? 'Last backup: ' + (Date.now() - last < 86400000 ? 'today' : Math.floor((Date.now() - last) / 86400000) + ' days ago') : 'Not backed up yet · entries and voice notes in one JSON file';
+  document.querySelectorAll('[data-haptic-level]').forEach(b => b.classList.toggle('active', Number(b.dataset.hapticLevel) === Haptics.level));
+  $('versionLabel').textContent = 'v' + APP_VERSION;
+  renderStorageInfo(); renderOfflineStatus();
+  try { if (navigator.storage && navigator.storage.persisted) $('persistStatus').textContent = (await navigator.storage.persisted()) ? 'Protected' : ''; } catch {}
+}
+async function renderOfflineStatus() {
+  let text = 'Ready';
+  if (isNative) text = 'Ready · built into the app';
+  else if (location.protocol === 'file:') text = 'Ready · local file';
+  else if ('serviceWorker' in navigator) {
+    try { const reg = await navigator.serviceWorker.getRegistration(); text = reg && reg.active ? 'Ready · saved on this device' : 'Setting up…'; } catch { text = 'Unavailable'; }
+  } else text = 'Needs a newer browser';
+  $('offlineStatus').textContent = text;
+}
+function registerServiceWorker() {
+  if (isNative || !('serviceWorker' in navigator) || !/^https?:$/.test(location.protocol)) return;
+  navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(renderOfflineStatus).catch(e => console.warn('SW failed', e));
+}
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvent = e; $('installRow').classList.remove('hidden'); });
+window.addEventListener('appinstalled', () => { installEvent = null; $('installRow').classList.add('hidden'); toast('My Diary installed'); play('success'); });
+window.addEventListener('offline', () => toast('You are offline. Everything still works.'));
+window.addEventListener('online', () => toast('Back online'));
+
+/* ------------------------------- Events ------------------------------ */
+['themeBtn', 'settingsTheme', 'recBtn', 'saveEntry', 'deleteEntry', 'saveCollection', 'deleteCollection', 'confirmOk'].forEach(id => { $(id).dataset.hx = 'none'; });
+document.querySelectorAll('[data-haptic-level]').forEach(b => { b.dataset.hx = 'none'; });
+
+/* One haptic per tap, on release (so scrolling never buzzes) */
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('button, .pill, .entry-card[data-open]'); if (!b || b.disabled) return;
+  const hx = b.dataset.hx; if (hx === 'none') return;
+  if (hx) return play(hx);
+  if (b.classList.contains('nav-item') || b.classList.contains('cal-day') || b.classList.contains('close') || b.closest('#editorTools')) return play('tick');
+  if (b.id === 'fab') return play('press');
+  play('tap');
+}, true);
+document.addEventListener('change', ev => { if (ev.target.matches('select')) play('tick'); });
+$('editorBody').addEventListener('beforeinput', ev => { if (ev.inputType === 'insertParagraph') play('type'); });
+
+document.addEventListener('click', async ev => {
+  const t = ev.target;
+  const create = t.closest('[data-create]');
+  if (create) { hideModal('createModal'); startCreate(create.dataset.create); return; }
+  const close = t.closest('[data-close]');
+  if (close) { requestClose(close.dataset.close); return; }
+  const nav = t.closest('[data-page]'); if (nav) { goto(nav.dataset.page); return; }
+  const go = t.closest('[data-goto]'); if (go) { goto(go.dataset.goto); return; }
+  const editCol = t.closest('[data-edit-collection]'); if (editCol) { openCollectionModal(editCol.dataset.editCollection); return; }
+  const coll = t.closest('[data-collection]');
+  if (coll) { collectionFilter = coll.dataset.collection; goto('collectionsPage', { keepFilter: true }); return; }
+  const allPill = t.closest('[data-collection-filter]'); if (allPill) { collectionFilter = ''; renderCollections(); return; }
+  const open = t.closest('[data-open]');
+  if (open) { const e = entries.find(x => x.id === open.dataset.open); if (e) startCreate(e.type, e); return; }
+  const day = t.closest('[data-day]');
+  if (day) { selectedDate = new Date(day.dataset.day + 'T12:00:00'); renderCalendar(); return; }
+  const filter = t.closest('[data-filter]');
+  if (filter) { activeFilter = filter.dataset.filter; document.querySelectorAll('[data-filter]').forEach(b => b.classList.toggle('active', b === filter)); renderSearch(); return; }
+  const cmd = t.closest('[data-command]'); if (cmd) { runCommand(cmd.dataset.command, cmd.dataset.value); return; }
+  const lvl = t.closest('[data-haptic-level]');
+  if (lvl) { Haptics.setLevel(Number(lvl.dataset.hapticLevel)); renderSettings(); if (Haptics.level) { play('press'); setTimeout(() => play('success'), 260); } if (!Haptics.supported()) toast('This device does not support vibration'); return; }
+  const pl = t.closest('[data-play]'); if (pl) { togglePlay(pl.dataset.play); return; }
+  const rm = t.closest('[data-rm-clip]'); if (rm) { removeClip(rm.dataset.rmClip); return; }
+});
+$('editorTools').addEventListener('mousedown', e => e.preventDefault());
+$('clipList').addEventListener('input', e => { const s = e.target.closest('[data-seek]'); if (s) seekClip(s.dataset.seek, Number(s.value)); });
+
+$('fab').addEventListener('click', () => showModal('createModal'));
+$('settingsBtn').addEventListener('click', () => goto('settingsPage'));
+$('themeBtn').addEventListener('click', toggleTheme);
+$('settingsTheme').addEventListener('click', toggleTheme);
+$('quickPrompt').addEventListener('click', showPrompt);
+$('entryType').addEventListener('change', () => {
+  const type = $('entryType').value;
+  $('quranFields').classList.toggle('show', type === 'Quran Reflection');
+  if (!collectionTouched) $('entryCollection').value = collections.some(c => c.id === collectionForType(type)) ? collectionForType(type) : $('entryCollection').value;
+});
+$('entryCollection').addEventListener('change', () => { collectionTouched = true; });
+$('editorModal').addEventListener('input', e => { if (e.target.id === 'editorBody') updateWordCount(); if (!e.target.closest('#clipList')) markDirty(); });
+$('editorModal').addEventListener('change', e => { if (e.target.matches('select')) markDirty(); });
+$('editorBody').addEventListener('paste', e => {
+  e.preventDefault();
+  const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+  document.execCommand('insertText', false, text);
+});
+$('saveEntry').addEventListener('click', saveAndClose);
+$('deleteEntry').addEventListener('click', deleteEntry);
+$('recBtn').addEventListener('click', () => { if (Rec.active) stopRecording(); else startRecording(); });
+$('searchInput').addEventListener('input', renderSearch);
+$('prevMonth').addEventListener('click', () => { calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1); renderCalendar(); });
+$('nextMonth').addEventListener('click', () => { calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1); renderCalendar(); });
+$('monthLabel').addEventListener('click', () => { selectedDate = new Date(); calendarMonth = new Date(); renderCalendar(); play('tick'); });
+$('newCollectionBtn').addEventListener('click', () => openCollectionModal());
+$('saveCollection').addEventListener('click', saveCollection);
+$('deleteCollection').addEventListener('click', deleteCollection);
+$('collectionName').addEventListener('keydown', e => { if (e.key === 'Enter') saveCollection(); });
+$('confirmOk').addEventListener('click', () => settleConfirm(true));
+$('confirmCancel').addEventListener('click', () => settleConfirm(false));
+$('goalSetting').addEventListener('change', () => {
+  const n = Math.max(1, Math.min(10000, Math.round(Number($('goalSetting').value)) || 100));
+  $('goalSetting').value = n; LS.set('myDiaryGoal', n); renderHome(); toast('Daily goal updated'); play('success');
+});
+$('promptBtn').addEventListener('click', showPrompt);
+$('anotherPrompt').addEventListener('click', showPrompt);
+$('usePrompt').addEventListener('click', () => {
+  const p = $('promptText').textContent; hideModal('promptModal');
+  startCreate('Creative Writing'); $('entryTitle').value = 'Writing prompt'; $('editorBody').innerHTML = '<p>' + esc(p) + '</p><p><br></p>';
+  updateWordCount(); markDirty();
+});
+$('exportBtn').addEventListener('click', exportBackup);
+$('exportTextBtn').addEventListener('click', exportText);
+$('importBtn').addEventListener('click', () => $('importFile').click());
+$('importFile').addEventListener('change', e => { const f = e.target.files[0]; if (f) importBackup(f); e.target.value = ''; });
+$('installBtn').addEventListener('click', async () => {
+  if (!installEvent) return; installEvent.prompt();
+  try { await installEvent.userChoice; } catch {} installEvent = null; $('installRow').classList.add('hidden');
+});
+document.querySelectorAll('.modal-backdrop').forEach(m => m.addEventListener('click', e => { if (e.target === m) requestClose(m.id); }));
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && modalStack.length) requestClose(modalStack[modalStack.length - 1]); });
+
+/* Never lose writing: flush on background / close */
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { if (Rec.active) stopRecording(); if (ed && dirty) persistNow(); }
+});
+window.addEventListener('pagehide', () => { if (ed && dirty) persistNow(); });
+window.addEventListener('unhandledrejection', ev => { console.error(ev.reason); });
+
+/* -------------------------------- Init ------------------------------- */
+async function init() {
+  if (history.state && history.state.dm === 1) history.replaceState(null, '');
+  applyTheme(); $('versionLabel').textContent = 'v' + APP_VERSION;
+  try {
+    if (!('indexedDB' in window)) throw new Error('IndexedDB unavailable');
+    db = await openDB(); await refresh();
+  } catch (err) {
+    console.error(err); storageOK = false; $('storageBanner').classList.remove('hidden'); toast('Local storage could not start on this device.');
+  }
+  goto('homePage'); registerServiceWorker();
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().then(renderSettings).catch(() => {}); } catch {}
+  setTimeout(() => {
+    const last = Number(LS.get('myDiaryLastBackup', 0));
+    if (storageOK && entries.length >= 3 && (!last || Date.now() - last > 7 * 86400000) && LS.get('myDiaryNudge') !== todayKey()) {
+      LS.set('myDiaryNudge', todayKey()); toast('Tip: export a backup from Settings to keep your pages safe.');
+    }
+  }, 4000);
+}
+window.__diary = { get entries() { return entries; }, haptics: Haptics, version: APP_VERSION };
+init();
+})();
+</script>
+</body>
+</html>
